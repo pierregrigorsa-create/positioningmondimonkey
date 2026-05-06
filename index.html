@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)file:///C:/Users/hwagener/Downloads/index.html.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Grade 1 – Position | with Mondi Monkey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link href="./Grade 1 – Position _ with Mondi Monkey_files/css2" rel="stylesheet">
+<style>
+  :root {
+    --sky-1: #B5E4F7;
+    --sky-2: #FFE9B0;
+    --cream: #FFF6E2;
+    --banana: #FFD93D;
+    --banana-deep: #F0A500;
+    --banana-tip: #5C4400;
+    /* Table: light blue */
+    --table: #A9D6F5;
+    --table-dark: #7FB8DE;
+    --table-shadow: #4A7AA0;
+    /* Basket: lighter brown */
+    --basket: #D9A66B;
+    --basket-dark: #B4854A;
+    --basket-rim: #8C5F30;
+    --monkey: #6B4423;
+    --monkey-dark: #4A2E18;
+    --monkey-belly: #F0CCA0;
+    --monkey-pink: #E89BA8;
+    --leaf: #6BCB77;
+    --leaf-dark: #4FA85A;
+    --correct: #6BCB77;
+    --tryagain: #FF8FA3;
+    --ink: #3A2A1A;
+    --paper: #FFFDF5;
+    --shadow: rgba(58, 42, 26, 0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    font-family: 'Quicksand', sans-serif;
+    background: linear-gradient(180deg, var(--sky-1) 0%, var(--sky-2) 100%);
+    color: var(--ink);
+    user-select: none;
+    -webkit-user-select: none;
+    overflow: hidden;
+  }
+
+  /* ---------- Floating clouds background ---------- */
+  .clouds { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .cloud {
+    position: absolute; width: 120px; height: 50px;
+    background: rgba(255,255,255,0.7); border-radius: 50px;
+    filter: blur(2px);
+  }
+  .cloud::before, .cloud::after {
+    content: ''; position: absolute; background: rgba(255,255,255,0.7); border-radius: 50%;
+  }
+  .cloud::before { width: 60px; height: 60px; top: -25px; left: 20px; }
+  .cloud::after  { width: 80px; height: 80px; top: -35px; right: 15px; }
+  .cloud:nth-child(1) { top: 8%;  left: -150px; animation: drift 80s linear infinite; }
+  .cloud:nth-child(2) { top: 20%; left: -250px; animation: drift 110s linear infinite; transform: scale(0.7); }
+  .cloud:nth-child(3) { top: 4%;  left: -200px; animation: drift 95s  linear infinite; transform: scale(1.3); animation-delay: -40s; }
+  @keyframes drift { from { transform: translateX(0) scale(var(--s,1)); } to { transform: translateX(calc(100vw + 300px)) scale(var(--s,1)); } }
+
+  /* ---------- App shell ---------- */
+  #app { position: relative; z-index: 1; height: 100vh; display: flex; flex-direction: column; }
+  .screen { flex: 1; display: none; flex-direction: column; padding: 16px; max-width: 1100px; margin: 0 auto; width: 100%; }
+  .screen.active { display: flex; animation: fadeIn 0.5s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ---------- Branding bar ---------- */
+  .brand {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--paper);
+    border: 3px solid var(--ink);
+    border-radius: 18px;
+    padding: 8px 16px;
+    box-shadow: 0 4px 0 var(--ink);
+    margin-bottom: 12px;
+  }
+  .brand-title {
+    font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 18px; color: var(--ink);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .brand-badge {
+    background: var(--banana); border: 2px solid var(--ink); border-radius: 10px; padding: 2px 10px;
+    font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 13px;
+  }
+  .pause-btn {
+    background: var(--cream); border: 3px solid var(--ink); border-radius: 12px;
+    padding: 8px 14px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 16px;
+    cursor: pointer; box-shadow: 0 3px 0 var(--ink); transition: transform 0.1s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .pause-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+  .pause-btn .icon { font-size: 18px; }
+
+  /* ---------- Password screen ---------- */
+  #screen-password .pw-card {
+    margin: auto; background: var(--paper);
+    border: 4px solid var(--ink); border-radius: 28px;
+    padding: 32px 28px; max-width: 420px; width: 100%;
+    box-shadow: 0 8px 0 var(--ink);
+    text-align: center;
+  }
+  .pw-monkey { width: 110px; height: 110px; margin: 0 auto 12px; }
+  .pw-title { font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 26px; margin-bottom: 6px; }
+  .pw-sub { font-size: 15px; opacity: 0.75; margin-bottom: 20px; }
+  .pw-input {
+    width: 100%; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 22px;
+    padding: 14px 16px; text-align: center; letter-spacing: 4px;
+    border: 3px solid var(--ink); border-radius: 14px; background: var(--cream);
+    text-transform: uppercase; outline: none;
+  }
+  .pw-input:focus { background: #FFF; box-shadow: 0 0 0 3px var(--banana); }
+  .pw-btn {
+    margin-top: 14px; width: 100%; padding: 14px;
+    background: var(--banana); border: 3px solid var(--ink); border-radius: 14px;
+    font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 18px; color: var(--ink);
+    cursor: pointer; box-shadow: 0 4px 0 var(--ink); transition: transform 0.1s;
+  }
+  .pw-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+  .pw-error { color: #D63B5C; font-weight: 600; margin-top: 10px; min-height: 20px; font-size: 14px; }
+  .pw-hint { margin-top: 14px; font-size: 12px; opacity: 0.55; }
+
+  /* ---------- Welcome / activity layout ---------- */
+  .stage-row { flex: 1; display: grid; grid-template-columns: 320px 1fr; gap: 16px; min-height: 0; }
+  @media (max-width: 880px) { .stage-row { grid-template-columns: 1fr; grid-template-rows: auto 1fr; } }
+
+  /* Mondi panel */
+  .mondi-panel {
+    background: var(--paper); border: 3px solid var(--ink); border-radius: 22px;
+    box-shadow: 0 5px 0 var(--ink); padding: 16px;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+  }
+  .mondi-avatar { width: 140px; height: 140px; flex-shrink: 0; }
+  .mondi-avatar.talking .mouth { animation: chatter 0.32s ease-in-out infinite alternate; transform-origin: center; }
+  @keyframes chatter { from { transform: scaleY(0.3); } to { transform: scaleY(1); } }
+  .mondi-avatar.waving .arm-r { animation: wave 1.2s ease-in-out infinite; transform-origin: 50px 60px; }
+  @keyframes wave { 0%,100% { transform: rotate(0); } 50% { transform: rotate(-25deg); } }
+
+  .speech {
+    background: var(--cream); border: 3px solid var(--ink); border-radius: 18px;
+    padding: 12px 14px; position: relative; width: 100%;
+    font-family: 'Quicksand', sans-serif; font-weight: 600; font-size: 16px; line-height: 1.4;
+    min-height: 80px;
+  }
+  .speech::before {
+    content: ''; position: absolute; top: -16px; left: 30px;
+    width: 0; height: 0; border: 12px solid transparent;
+    border-bottom-color: var(--ink); border-top: 0;
+  }
+  .speech::after {
+    content: ''; position: absolute; top: -11px; left: 33px;
+    width: 0; height: 0; border: 9px solid transparent;
+    border-bottom-color: var(--cream); border-top: 0;
+  }
+  @media (max-width: 880px) {
+    .mondi-panel { flex-direction: row; align-items: flex-start; }
+    .mondi-avatar { width: 96px; height: 96px; }
+    .speech::before, .speech::after { display: none; }
+  }
+
+  /* Stage / scene */
+  .stage {
+    background: linear-gradient(180deg, #E5F4FF 0%, #FFF2C5 70%, #DCC9A0 100%);
+    border: 3px solid var(--ink); border-radius: 22px;
+    box-shadow: 0 5px 0 var(--ink);
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+
+  .preposition-pill {
+    position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+    background: var(--banana); border: 3px solid var(--ink); border-radius: 999px;
+    padding: 6px 22px;
+    font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 22px;
+    box-shadow: 0 3px 0 var(--ink);
+    z-index: 5; letter-spacing: 1px;
+    animation: pop 0.4s ease;
+  }
+  @keyframes pop { from { transform: translateX(-50%) scale(0.4); opacity: 0; } to { transform: translateX(-50%) scale(1); opacity: 1; } }
+
+  .progress {
+    position: absolute; top: 14px; right: 14px; z-index: 5;
+    background: var(--paper); border: 2px solid var(--ink); border-radius: 12px;
+    padding: 4px 10px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 13px;
+  }
+
+  .scene-svg { flex: 1; width: 100%; height: 100%; display: block; }
+
+  /* Banana tray */
+  .tray {
+    position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+    background: rgba(255,253,245,0.9); border: 3px solid var(--ink); border-radius: 16px;
+    padding: 8px 14px; display: flex; align-items: center; gap: 10px;
+    box-shadow: 0 3px 0 var(--ink);
+    font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 14px;
+  }
+  .tray-banana { width: 48px; height: 48px; cursor: pointer; transition: transform 0.2s; }
+  .tray-banana:hover { transform: scale(1.1) rotate(-5deg); }
+  .tray.armed .tray-banana { animation: bob 0.6s ease-in-out infinite alternate; filter: drop-shadow(0 0 8px var(--banana-deep)); }
+  @keyframes bob { from { transform: translateY(0); } to { transform: translateY(-6px); } }
+
+  /* Drop hit zones (invisible but tappable) */
+  .hit { fill: transparent; cursor: pointer; }
+  .scene-bg { fill: transparent; cursor: default; }
+  .stage.armed .scene-bg { cursor: crosshair; }
+
+  /* Placed banana (animated) */
+  .placed-banana { transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); pointer-events: none; }
+  .placed-banana.wrong { animation: wobble 0.6s ease; }
+  @keyframes wobble {
+    0%,100% { transform: translate(var(--x,0), var(--y,0)) rotate(0); }
+    25% { transform: translate(var(--x,0), var(--y,0)) rotate(-15deg); }
+    75% { transform: translate(var(--x,0), var(--y,0)) rotate(15deg); }
+  }
+
+  /* Sparkles */
+  .sparkle { fill: var(--banana); animation: sparkle 0.8s ease forwards; transform-origin: center; }
+  @keyframes sparkle { 0% { opacity: 0; transform: scale(0); } 50% { opacity: 1; transform: scale(1.4); } 100% { opacity: 0; transform: scale(2); } }
+
+  /* Big buttons */
+  .big-btn {
+    background: var(--banana); border: 3px solid var(--ink); border-radius: 16px;
+    padding: 14px 28px; font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 18px;
+    cursor: pointer; box-shadow: 0 5px 0 var(--ink); transition: transform 0.1s;
+    color: var(--ink);
+  }
+  .big-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--ink); }
+  .big-btn.green { background: var(--correct); color: #FFF; }
+  .big-btn.cream { background: var(--cream); }
+  .btn-row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+  /* Welcome layout */
+  .welcome-card {
+    background: var(--paper); border: 4px solid var(--ink); border-radius: 24px;
+    padding: 24px; box-shadow: 0 6px 0 var(--ink);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+    margin: auto; max-width: 900px; width: 100%;
+  }
+  @media (max-width: 760px) { .welcome-card { grid-template-columns: 1fr; } }
+  .welcome-card h2 { font-family: 'Fredoka', sans-serif; font-size: 26px; margin-bottom: 10px; }
+  .welcome-card p { font-size: 15px; line-height: 1.5; margin-bottom: 10px; }
+  .parent-note {
+    background: #FFF1C2; border: 2px dashed var(--ink); border-radius: 12px;
+    padding: 12px; font-size: 13px; line-height: 1.45;
+  }
+  .parent-note b { font-family: 'Fredoka', sans-serif; }
+
+  /* Pause overlay */
+  .pause-overlay {
+    position: fixed; inset: 0; background: rgba(58,42,26,0.6); z-index: 100;
+    display: none; align-items: center; justify-content: center;
+    backdrop-filter: blur(3px);
+  }
+  .pause-overlay.show { display: flex; }
+  .pause-card {
+    background: var(--paper); border: 4px solid var(--ink); border-radius: 24px;
+    padding: 32px 36px; text-align: center; box-shadow: 0 8px 0 var(--ink);
+    max-width: 360px;
+  }
+  .pause-card h2 { font-family: 'Fredoka', sans-serif; font-size: 28px; margin-bottom: 8px; }
+  .pause-card p { margin-bottom: 18px; font-size: 15px; }
+
+  /* Feedback / End screen */
+  .feedback-card {
+    background: var(--paper); border: 4px solid var(--ink); border-radius: 24px;
+    padding: 24px; box-shadow: 0 6px 0 var(--ink); margin: auto;
+    max-width: 720px; width: 100%; max-height: 100%; overflow-y: auto;
+  }
+  .feedback-card h2 { font-family: 'Fredoka', sans-serif; font-size: 28px; text-align: center; margin-bottom: 4px; }
+  .end-praise { font-size: 17px; line-height: 1.55; text-align: center; margin: 14px 4px; }
+  .end-praise b { font-family: 'Fredoka', sans-serif; }
+  .end-stars { font-size: 36px; text-align: center; letter-spacing: 6px; margin: 6px 0 4px; }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(120%);
+    background: var(--ink); color: var(--paper); padding: 12px 20px; border-radius: 14px;
+    font-weight: 600; z-index: 200; transition: transform 0.4s ease;
+    box-shadow: 0 4px 0 #000;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+<div class="clouds">
+  <div class="cloud"></div><div class="cloud"></div><div class="cloud"></div>
+</div>
+
+<div id="app">
+
+  <!-- =================== PASSWORD SCREEN =================== -->
+  <section id="screen-password" class="screen active" style="justify-content:center;">
+    <div class="pw-card">
+      <svg class="pw-monkey" viewBox="0 0 100 100">
+        <use href="#monkey-face"></use>
+      </svg>
+      <div class="pw-title">Hi, I'm Mondi Monkey!</div>
+      <div class="pw-sub">Please enter your password to start</div>
+      <input type="password" id="pw-input" class="pw-input" placeholder="• • • • • •" maxlength="6" autocomplete="off">
+      <button id="pw-btn" class="pw-btn">Let's Go!</button>
+      <div id="pw-error" class="pw-error"></div>
+      <div class="pw-hint">Grade 1 – Position</div>
+    </div>
+  </section>
+
+  <!-- =================== WELCOME SCREEN =================== -->
+  <section id="screen-welcome" class="screen">
+    <div class="brand">
+      <div class="brand-title">🐵 Mondi Monkey <span class="brand-badge">Grade 1 – Position</span></div>
+      <button class="pause-btn" data-action="pause"><span class="icon">⏸</span> Pause</button>
+    </div>
+    <div class="welcome-card">
+      <div>
+        <svg viewBox="0 0 100 100" style="width:100%;max-width:200px;display:block;margin:0 auto;" id="mondi-welcome">
+          <use href="#monkey-face"></use>
+        </svg>
+      </div>
+      <div>
+        <h2>Hello, friend! 🍌</h2>
+        <p>I'm <b>Mondi Monkey</b>! Today we're going to play a fun game about <b>Position</b>.</p>
+        <p><b>Position</b> means showing a specific place — like <i>in</i>, <i>on</i>, <i>under</i>, and more!</p>
+        <p>I will give you instructions, and you will tap on the banana, then tap where you think it should go.</p>
+        <div class="parent-note">
+          <b>Hello, Mum &amp; Dad! 👋</b><br>
+          Please sit with your child and help if needed. The game has 8 little activities, and you can pause anytime using the <b>⏸ Pause</b> button at the top.
+        </div>
+        <div style="margin-top:16px; text-align:center;">
+          <button id="start-btn" class="big-btn">Start Activity 1 →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== ACTIVITY SCREEN =================== -->
+  <section id="screen-activity" class="screen">
+    <div class="brand">
+      <div class="brand-title">🐵 Mondi Monkey <span class="brand-badge">Grade 1 – Position</span></div>
+      <button class="pause-btn" data-action="pause"><span class="icon">⏸</span> Pause</button>
+    </div>
+    <div class="stage-row">
+      <div class="mondi-panel">
+        <svg class="mondi-avatar" id="mondi-avatar" viewBox="0 0 100 100">
+          <use href="#monkey-face"></use>
+        </svg>
+        <div class="speech" id="speech">Tap the banana, then tap where it should go!</div>
+        <button id="repeat-btn" class="big-btn cream" style="font-size:14px;padding:8px 14px;">🔁 Say it again</button>
+      </div>
+      <div class="stage" id="stage">
+        <div class="preposition-pill" id="prep-pill">in</div>
+        <div class="progress" id="progress">1 / 8</div>
+        <svg class="scene-svg" id="scene" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet">
+          <!-- scene content injected here -->
+        </svg>
+        <div class="tray" id="tray">
+          <svg class="tray-banana" id="tray-banana" viewBox="0 0 100 100">
+            <use href="#banana"></use>
+          </svg>
+          <span>Tap me!</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== END / FEEDBACK SCREEN =================== -->
+  <section id="screen-feedback" class="screen">
+    <div class="brand">
+      <div class="brand-title">🐵 Mondi Monkey <span class="brand-badge">Grade 1 – Position</span></div>
+    </div>
+    <div class="feedback-card">
+      <h2>🎉 Well Done!</h2>
+      <div class="end-stars">⭐ ⭐ ⭐ ⭐ ⭐</div>
+      <p class="end-praise">
+        You tried your <b>very best</b> today, and Mondi Monkey is <b>so proud</b> of you! 🐵🍌<br>
+        Keep practising your <b>position words</b> — you're getting better and better every day!
+      </p>
+      <div class="parent-note" style="margin-top:14px;">
+        <b>For Mummy &amp; Daddy 👋</b><br>
+        Please remind your child to <b>practise these position words</b> often, and try to use them
+        in everyday instructions at home. For example:
+        <ul style="margin:8px 0 0 18px; line-height:1.6;">
+          <li>"Put the plate <b>on</b> the table."</li>
+          <li>"Put the cup <b>in</b> the cupboard."</li>
+          <li>"Your shoes are <b>under</b> the bed."</li>
+          <li>"Stand <b>behind</b> your sister."</li>
+          <li>"The book is <b>next to</b> the lamp."</li>
+        </ul>
+        Hearing and using these words every day helps your child learn faster. Thank you for practising with them! 💛
+      </div>
+      <div class="btn-row" style="margin-top:18px;">
+        <button id="fb-restart" class="big-btn green">🔁 Play Again</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- =================== PAUSE OVERLAY =================== -->
+<div class="pause-overlay" id="pause-overlay">
+  <div class="pause-card">
+    <h2>⏸ Paused</h2>
+    <p>Take your time! Press resume when you're ready to continue.</p>
+    <button id="resume-btn" class="big-btn green">▶ Resume</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- =================== SVG SYMBOL DEFS =================== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+
+    <!-- Mondi Monkey face -->
+    <symbol id="monkey-face" viewBox="0 0 100 100">
+      <!-- ears -->
+      <circle cx="18" cy="42" r="10" fill="var(--monkey)" stroke="var(--monkey-dark)" stroke-width="2"></circle>
+      <circle cx="18" cy="42" r="5" fill="var(--monkey-pink)"></circle>
+      <circle cx="82" cy="42" r="10" fill="var(--monkey)" stroke="var(--monkey-dark)" stroke-width="2"></circle>
+      <circle cx="82" cy="42" r="5" fill="var(--monkey-pink)"></circle>
+      <!-- head -->
+      <circle cx="50" cy="48" r="32" fill="var(--monkey)" stroke="var(--monkey-dark)" stroke-width="2.5"></circle>
+      <!-- face mask -->
+      <ellipse cx="50" cy="58" rx="22" ry="20" fill="var(--monkey-belly)"></ellipse>
+      <!-- forehead/hair tuft -->
+      <path d="M 36 24 Q 42 18 50 22 Q 58 18 64 24 Q 60 28 50 26 Q 40 28 36 24 Z" fill="var(--monkey-dark)"></path>
+      <!-- eyes -->
+      <ellipse cx="40" cy="48" rx="4.5" ry="5" fill="#FFF" stroke="var(--ink)" stroke-width="1.5"></ellipse>
+      <ellipse cx="60" cy="48" rx="4.5" ry="5" fill="#FFF" stroke="var(--ink)" stroke-width="1.5"></ellipse>
+      <circle cx="41" cy="49" r="2.5" fill="var(--ink)"></circle>
+      <circle cx="61" cy="49" r="2.5" fill="var(--ink)"></circle>
+      <circle cx="41.7" cy="48" r="0.9" fill="#FFF"></circle>
+      <circle cx="61.7" cy="48" r="0.9" fill="#FFF"></circle>
+      <!-- nose -->
+      <ellipse cx="46" cy="60" rx="1.3" ry="1" fill="var(--ink)"></ellipse>
+      <ellipse cx="54" cy="60" rx="1.3" ry="1" fill="var(--ink)"></ellipse>
+      <!-- mouth -->
+      <path class="mouth" d="M 42 66 Q 50 72 58 66" stroke="var(--ink)" stroke-width="2" fill="var(--monkey-pink)" stroke-linecap="round"></path>
+      <!-- waving hand (arm-r) -->
+      <g class="arm-r">
+        <ellipse cx="78" cy="68" rx="6" ry="8" fill="var(--monkey)" stroke="var(--monkey-dark)" stroke-width="2"></ellipse>
+        <circle cx="78" cy="62" r="4" fill="var(--monkey-belly)"></circle>
+      </g>
+    </symbol>
+
+    <!-- Banana: partly-peeled cartoon banana (matches user's reference image) -->
+    <symbol id="banana" viewBox="0 0 100 100">
+      <!-- ground shadow -->
+      <ellipse cx="50" cy="94" rx="30" ry="3" fill="rgba(0,0,0,0.18)"></ellipse>
+
+      <!-- LEFT peel flap (drooping outward) -->
+      <path d="M 50 60 C 30 64, 18 78, 14 92 C 22 90, 30 84, 38 78 C 44 74, 48 68, 50 62 Z" fill="#FFF2D0" stroke="#5C4400" stroke-width="2.2" stroke-linejoin="round"></path>
+
+      <!-- RIGHT peel flap (drooping outward) -->
+      <path d="M 50 60 C 70 64, 82 78, 86 92 C 78 90, 70 84, 62 78 C 56 74, 52 68, 50 62 Z" fill="#FFF2D0" stroke="#5C4400" stroke-width="2.2" stroke-linejoin="round"></path>
+
+      <!-- FRONT-CENTER peel flap (hanging down) -->
+      <path d="M 42 60 C 42 76, 46 90, 50 94 C 54 90, 58 76, 58 60 Z" fill="#FFE8AC" stroke="#5C4400" stroke-width="2.2" stroke-linejoin="round"></path>
+
+      <!-- Yellow banana fruit body sticking up out of the peel -->
+      <path d="M 38 60
+               C 36 44, 38 26, 44 16
+               C 48 10, 54 10, 56 18
+               C 58 30, 60 46, 62 60
+               C 58 62, 54 63, 50 63
+               C 46 63, 42 62, 38 60 Z" fill="var(--banana)" stroke="#5C4400" stroke-width="2.5" stroke-linejoin="round"></path>
+
+      <!-- Highlight on the fruit -->
+      <path d="M 44 22 C 41 36, 41 50, 43 58" stroke="#FFF6B5" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.9"></path>
+
+      <!-- Stem at the top -->
+      <path d="M 49 16 C 48 10, 50 6, 53 8 C 55 10, 54 14, 52 16 Z" fill="#5C4400" stroke="#3A2A1A" stroke-width="1.5"></path>
+
+      <!-- Dotty texture (like a real ripe banana) on the fruit -->
+      <circle cx="46" cy="30" r="0.9" fill="#5C4400"></circle>
+      <circle cx="52" cy="38" r="0.9" fill="#5C4400"></circle>
+      <circle cx="48" cy="46" r="0.9" fill="#5C4400"></circle>
+      <circle cx="54" cy="52" r="0.9" fill="#5C4400"></circle>
+      <circle cx="50" cy="24" r="0.8" fill="#5C4400"></circle>
+
+      <!-- Dot on the front peel flap -->
+      <circle cx="50" cy="80" r="0.9" fill="#5C4400"></circle>
+      <circle cx="46" cy="86" r="0.7" fill="#5C4400"></circle>
+      <circle cx="54" cy="84" r="0.7" fill="#5C4400"></circle>
+    </symbol>
+
+    <!-- Table -->
+    <symbol id="table-svg" viewBox="0 0 400 200">
+      <!-- top -->
+      <rect x="20" y="40" width="360" height="32" rx="6" fill="var(--table)" stroke="var(--table-shadow)" stroke-width="3"></rect>
+      <rect x="20" y="40" width="360" height="10" rx="4" fill="#C9E6F8"></rect>
+      <!-- legs -->
+      <rect x="48" y="68" width="22" height="120" rx="3" fill="var(--table-dark)" stroke="var(--table-shadow)" stroke-width="2.5"></rect>
+      <rect x="330" y="68" width="22" height="120" rx="3" fill="var(--table-dark)" stroke="var(--table-shadow)" stroke-width="2.5"></rect>
+      <!-- subtle top lines -->
+      <line x1="60" y1="56" x2="350" y2="56" stroke="var(--table-shadow)" stroke-width="1" opacity="0.4"></line>
+      <line x1="80" y1="62" x2="320" y2="62" stroke="var(--table-shadow)" stroke-width="1" opacity="0.3"></line>
+    </symbol>
+
+    <!-- Basket -->
+    <symbol id="basket-svg" viewBox="0 0 200 140">
+      <!-- back rim (visible behind opening) — rx aligned with body sides (22..178) -->
+      <ellipse cx="100" cy="22" rx="78" ry="13" fill="var(--basket-dark)" stroke="var(--basket-rim)" stroke-width="2.5"></ellipse>
+      <!-- inside (darker) -->
+      <ellipse cx="100" cy="24" rx="72" ry="10" fill="#7A4F22"></ellipse>
+      <!-- body -->
+      <path d="M 22 22 Q 30 120 100 130 Q 170 120 178 22 Z" fill="var(--basket)" stroke="var(--basket-rim)" stroke-width="3" stroke-linejoin="round"></path>
+      <!-- weave pattern -->
+      <g stroke="var(--basket-dark)" stroke-width="2" fill="none" opacity="0.7">
+        <path d="M 30 40 Q 100 50 170 40"></path>
+        <path d="M 32 60 Q 100 72 168 60"></path>
+        <path d="M 36 80 Q 100 92 164 80"></path>
+        <path d="M 42 100 Q 100 112 158 100"></path>
+      </g>
+      <g stroke="var(--basket-dark)" stroke-width="1.5" opacity="0.5">
+        <line x1="60" y1="28" x2="58" y2="118"></line>
+        <line x1="100" y1="32" x2="100" y2="128"></line>
+        <line x1="140" y1="28" x2="142" y2="118"></line>
+      </g>
+      <!-- top rim highlight (matched to body sides) -->
+      <ellipse cx="100" cy="22" rx="78" ry="13" fill="none" stroke="#F0C892" stroke-width="2"></ellipse>
+    </symbol>
+
+    <!-- Cardboard box -->
+    <symbol id="box-svg" viewBox="0 0 160 140">
+      <!-- back -->
+      <polygon points="20,50 80,20 140,50 140,130 20,130" fill="#C99462" stroke="var(--table-shadow)" stroke-width="3" stroke-linejoin="round"></polygon>
+      <!-- top flaps -->
+      <polygon points="20,50 80,20 80,30 20,60" fill="#A8753F" stroke="var(--table-shadow)" stroke-width="2.5"></polygon>
+      <polygon points="80,20 140,50 140,60 80,30" fill="#8E5C2D" stroke="var(--table-shadow)" stroke-width="2.5"></polygon>
+      <!-- center seam -->
+      <line x1="80" y1="30" x2="80" y2="130" stroke="var(--table-shadow)" stroke-width="2" opacity="0.5"></line>
+      <!-- tape -->
+      <rect x="74" y="20" width="12" height="50" fill="#E8C898" opacity="0.6"></rect>
+    </symbol>
+
+  </defs>
+</svg>
+
+<script>
+'use strict';
+
+/* =====================================================================
+   STATE
+===================================================================== */
+const PASSWORD = 'BPMM04';
+const ACTIVITIES = [
+  {
+    word: 'in',
+    instruction: "Put a banana in the basket that is on the table.",
+    sayWithMe: "The banana is in the basket.",
+    sceneType: 'tableBasket',
+    correctZone: { x: 320, y: 175, w: 160, h: 50 },   // inside basket opening
+    // Banana sits inside the basket but its top portion sticks out above the rim.
+    placedAt:    { x: 400, y: 155, scale: 0.7, behindBasket: false },
+    bananaLayer: 'inside-basket'
+  },
+  {
+    word: 'on',
+    instruction: "Can you put a banana on the plate?",
+    sayWithMe: "The banana is on the plate.",
+    sceneType: 'tableBasket',
+    // Target zone covers the plate (centered at x=270, y=240)
+    correctZone: { x: 210, y: 222, w: 120, h: 32 },
+    // Banana lying on top of the plate — bigger so it reads clearly
+    placedAt: { x: 270, y: 215, scale: 0.75 }
+  },
+  {
+    word: 'under',
+    instruction: "Now put a banana under the table.",
+    sayWithMe: "The banana is under the table.",
+    sceneType: 'tableBasket',
+    correctZone: { x: 100, y: 320, w: 600, h: 100 },
+    placedAt: { x: 400, y: 380, scale: 0.65 }
+  },
+  {
+    word: 'next to',
+    instruction: "Let's see if you can put a banana next to the basket that is on the table.",
+    sayWithMe: "The banana is next to the basket.",
+    sceneType: 'tableBasket',
+    correctZones: [
+      { x: 490, y: 175, w: 110, h: 90 }   // right of basket (plate is on the left)
+    ],
+    placedAt: { x: 540, y: 245, scale: 0.55 }
+  },
+  {
+    word: 'above',
+    instruction: "Put a banana above the basket on the table.",
+    sayWithMe: "The banana is above the basket.",
+    sceneType: 'tableBasket',
+    correctZone: { x: 320, y: 50, w: 160, h: 110 },
+    placedAt: { x: 400, y: 110, scale: 0.6 }
+  },
+  {
+    word: 'behind',
+    instruction: "Can you put a banana behind the basket on the table? Part of the banana will be invisible because it is behind!",
+    sayWithMe: "The banana is behind the basket.",
+    sceneType: 'tableBasket',
+    correctZone: { x: 290, y: 165, w: 220, h: 40 }, // just behind basket rim
+    // Larger, positioned higher and offset so a clear chunk sticks out from behind the basket (3D feel)
+    placedAt: { x: 410, y: 190, scale: 0.85, behindBasket: true }
+  },
+  {
+    word: 'in front of',
+    instruction: "Now put a banana in front of the basket that is on the table.",
+    sayWithMe: "The banana is in front of the basket.",
+    sceneType: 'tableBasket',
+    correctZone: { x: 290, y: 250, w: 220, h: 40 },
+    // Lying on the table top in front of the basket; rendered in front-layer so it overlaps basket front (3D feel)
+    placedAt: { x: 400, y: 248, scale: 0.7, frontOfBasket: true }
+  },
+  {
+    word: 'between',
+    instruction: "Let's see if you can put a banana between two boxes.",
+    sayWithMe: "The banana is between the two boxes.",
+    sceneType: 'twoBoxes',
+    correctZone: { x: 340, y: 240, w: 120, h: 130 },
+    placedAt: { x: 400, y: 310, scale: 0.6 }
+  }
+];
+
+const state = {
+  screen: 'password',
+  activityIdx: 0,
+  bananaArmed: false,         // true after tapping the tray banana
+  attempts: ACTIVITIES.map(() => 0),
+  results: ACTIVITIES.map(() => ({ done: false, firstTry: false })),
+  paused: false,
+  pendingSpeech: [],
+  awaitingTap: false
+};
+
+/* =====================================================================
+   SPEECH (Mondi's voice)
+   - Pitch raised for young-boy character.
+   - Multiple utterances with short pauses for natural intonation.
+===================================================================== */
+const speech = {
+  voices: [],
+  currentBatch: null,
+  enabled: 'speechSynthesis' in window,
+  preferred: null,
+
+  init() {
+    if (!this.enabled) return;
+    const load = () => {
+      this.voices = window.speechSynthesis.getVoices();
+      // Prefer Google/natural voices, then any English voice
+      const pri = ['Google UK English Male', 'Microsoft George', 'Daniel', 'Alex', 'Google US English'];
+      for (const name of pri) {
+        const v = this.voices.find(x => x.name === name);
+        if (v) { this.preferred = v; return; }
+      }
+      this.preferred = this.voices.find(v => /en[-_]/.test(v.lang)) || this.voices[0];
+    };
+    load();
+    window.speechSynthesis.onvoiceschanged = load;
+  },
+
+  /**
+   * Speak an array of phrases with a small pause between them, for intonation.
+   * @param {string[]|string} phrases
+   * @param {() => void} [done]
+   */
+  say(phrases, done) {
+    if (!this.enabled) { if (done) done(); return; }
+    if (typeof phrases === 'string') phrases = [phrases];
+    this.cancel();
+    const id = Symbol();
+    this.currentBatch = id;
+    setTalking(true);
+    let i = 0;
+    const next = () => {
+      if (state.paused) return; // resume will replay
+      if (this.currentBatch !== id) return;
+      if (i >= phrases.length) {
+        setTalking(false);
+        if (done) done();
+        return;
+      }
+      const u = new SpeechSynthesisUtterance(phrases[i++]);
+      if (this.preferred) u.voice = this.preferred;
+      u.pitch = 1.55;     // young-boy character
+      u.rate  = 0.92;     // a bit slower for clarity
+      u.volume = 1;
+      u.onend = () => setTimeout(next, 240); // small pause = natural intonation
+      u.onerror = () => setTimeout(next, 240);
+      window.speechSynthesis.speak(u);
+    };
+    next();
+  },
+
+  cancel() {
+    if (this.enabled) window.speechSynthesis.cancel();
+    setTalking(false);
+    this.currentBatch = null;
+  }
+};
+
+function setTalking(on) {
+  document.querySelectorAll('.mondi-avatar').forEach(el => {
+    el.classList.toggle('talking', on);
+  });
+}
+
+/* =====================================================================
+   SOUND (gentle chimes via Web Audio)
+===================================================================== */
+let audioCtx = null;
+function ensureAudio() {
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { audioCtx = null; }
+  }
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+}
+function chime(notes, type = 'sine') {
+  if (!audioCtx) return;
+  const now = audioCtx.currentTime;
+  notes.forEach(([f, t, d], i) => {
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = type; o.frequency.value = f;
+    g.gain.value = 0;
+    g.gain.linearRampToValueAtTime(0.18, now + t + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, now + t + d);
+    o.connect(g).connect(audioCtx.destination);
+    o.start(now + t); o.stop(now + t + d + 0.02);
+  });
+}
+const sndCorrect  = () => chime([[523.25,0,0.18],[659.25,0.12,0.18],[783.99,0.24,0.32]]);
+const sndWrong    = () => chime([[349.23,0,0.18],[293.66,0.14,0.28]], 'triangle');
+const sndCelebrate= () => chime([[523.25,0,0.14],[659.25,0.10,0.14],[783.99,0.20,0.14],[1046.5,0.30,0.4]]);
+
+/* =====================================================================
+   SCREEN MANAGEMENT
+===================================================================== */
+function showScreen(name) {
+  state.screen = name;
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+}
+
+function setSpeechBubble(text) {
+  document.getElementById('speech').textContent = text;
+}
+
+/* =====================================================================
+   PASSWORD SCREEN
+===================================================================== */
+const pwInput = document.getElementById('pw-input');
+const pwBtn   = document.getElementById('pw-btn');
+const pwError = document.getElementById('pw-error');
+
+pwBtn.addEventListener('click', tryPassword);
+pwInput.addEventListener('keydown', e => { if (e.key === 'Enter') tryPassword(); });
+
+function tryPassword() {
+  const v = pwInput.value.trim().toUpperCase();
+  if (v === PASSWORD) {
+    pwError.textContent = '';
+    ensureAudio();           // unlock audio on user gesture
+    speech.init();
+    sndCorrect();
+    showScreen('welcome');
+    // Mondi welcome speech
+    document.getElementById('mondi-welcome').classList.add('waving','talking');
+    setTimeout(() => {
+      speech.say([
+        "Hi friends! I'm Mondi Monkey!",
+        "Today, we are going to play a fun game... about position!",
+        "Position means... showing a specific place. Like in, on, under, and more!",
+        "I will give you instructions, and you will choose where to put the banana.",
+        "Mum or Dad, please sit with us and help if needed.",
+        "Are you ready? Let's go!"
+      ]);
+    }, 350);
+  } else {
+    pwError.textContent = 'Oops! That password is not right. Try again.';
+    pwInput.value = '';
+    pwInput.focus();
+    sndWrong();
+  }
+}
+
+document.getElementById('start-btn').addEventListener('click', () => {
+  speech.cancel();
+  startActivity(0);
+});
+
+/* =====================================================================
+   ACTIVITY ENGINE
+===================================================================== */
+const sceneEl     = document.getElementById('scene');
+const stageEl     = document.getElementById('stage');
+const trayEl      = document.getElementById('tray');
+const trayBanana  = document.getElementById('tray-banana');
+const prepPill    = document.getElementById('prep-pill');
+const progressEl  = document.getElementById('progress');
+const repeatBtn   = document.getElementById('repeat-btn');
+
+repeatBtn.addEventListener('click', () => {
+  if (state.screen !== 'activity') return;
+  speakInstruction(ACTIVITIES[state.activityIdx]);
+});
+
+function startActivity(idx) {
+  state.activityIdx = idx;
+  state.bananaArmed = false;
+  state.awaitingTap = false;
+  showScreen('activity');
+  const a = ACTIVITIES[idx];
+  prepPill.textContent = a.word;
+  progressEl.textContent = `${idx + 1} / ${ACTIVITIES.length}`;
+  trayEl.classList.remove('armed');
+  stageEl.classList.remove('armed');
+  renderScene(a);
+  setSpeechBubble(`Tap on the banana, then tap where it should go.`);
+  setTimeout(() => speakInstruction(a), 350);
+}
+
+function speakInstruction(a) {
+  // Build phrases — split on punctuation for natural prosody
+  const phrases = a.instruction
+    .replace(/\.\s*$/, '')
+    .split(/(?<=[,.])\s+/)
+    .filter(Boolean);
+  const intros = ["Listen carefully...", "Okay, ready?", "Here we go!", "Your turn!", "Let's try this one!"];
+  const intro = intros[state.activityIdx % intros.length];
+  speech.say([intro, ...phrases]);
+}
+
+/* ---------- Scene rendering ----------
+   Layer order (back to front):
+     scene-bg  →  behind-layer  →  table  →  basket-back-half  →
+     in-basket-layer  →  basket-front-half  →  front-layer  →  hits
+   This produces:
+     • basket sitting on table (basket bottom touches table top)
+     • "in" banana tucked into basket with the top sticking out
+     • "behind" banana visible behind basket (3D)
+     • "in front of" banana lying on table overlapping basket front (3D)
+*/
+function renderScene(a) {
+  let inner = '';
+  inner += `<rect class="scene-bg" id="scene-bg" x="0" y="0" width="800" height="500"/>`;
+
+  if (a.sceneType === 'tableBasket') {
+    // Behind-everything banana layer (for "behind" + first half of "in")
+    inner += `<g id="behind-layer"></g>`;
+
+    /* Table — inlined directly so it truly fills 600 wide × 200 tall.
+       Table top runs y=240 to y=272 in scene coords (translate y=200 + rect y=40).
+       Table top runs x=130 to x=670 in scene coords (translate x=100 + rect x=30 .. x=570
+       after scaling 360 width by 1.5).                                      */
+    inner += `<g transform="translate(100, 200)">
+                <!-- top -->
+                <rect x="30" y="40" width="540" height="32" rx="6"
+                      fill="var(--table)" stroke="var(--table-shadow)" stroke-width="3"/>
+                <rect x="30" y="40" width="540" height="10" rx="4" fill="#C9E6F8"/>
+                <!-- legs -->
+                <rect x="72" y="68" width="22" height="120" rx="3"
+                      fill="var(--table-dark)" stroke="var(--table-shadow)" stroke-width="2.5"/>
+                <rect x="495" y="68" width="22" height="120" rx="3"
+                      fill="var(--table-dark)" stroke="var(--table-shadow)" stroke-width="2.5"/>
+                <!-- subtle top lines -->
+                <line x1="90" y1="56" x2="525" y2="56" stroke="var(--table-shadow)" stroke-width="1" opacity="0.4"/>
+                <line x1="120" y1="62" x2="480" y2="62" stroke="var(--table-shadow)" stroke-width="1" opacity="0.3"/>
+              </g>`;
+
+    /* Basket sitting ON the table.
+       Basket symbol viewBox 0..140 mapped to height 110.
+       Translate y so the basket's bottom lands on table top y=240.
+       basket bottom in symbol space is ~130 → scaled by 110/140 ≈ 102.
+       So translate y + 102 = 240  →  translate y = 138.
+
+       To keep the rim perfectly in sync with the body, the basket is drawn
+       inside ONE scaled group so rim + body share the same coordinate space.
+       The rim is split into a back half (drawn first) and a front half
+       (drawn after the in-basket-layer), so the "in" banana can sit between
+       them and appear tucked inside.                                      */
+    const bScale = `scale(${158/200}, ${110/140})`;
+
+    /* Layer order for the basket (back to front):
+         1. Full rim ellipse (the open top)            ← back-most
+         2. Dark interior ellipse                      ← inside of basket
+         3. [in-basket-layer] — banana for "in" sits here
+         4. Body (front-curve only, opaque)            ← covers rim's front half
+         5. Weave + highlight                          ← decoration on body
+       This guarantees the rim is visible, and the body covers exactly
+       the front portion of the rim so the rim opening shows at the top. */
+
+    // Back: full rim ellipse + dark interior
+    inner += `<g transform="translate(310, 138)">
+                <g transform="${bScale}">
+                  <!-- full rim ellipse (the open top of the basket) -->
+                  <ellipse cx="100" cy="22" rx="78" ry="18"
+                           fill="var(--basket-dark)" stroke="var(--basket-rim)" stroke-width="3"/>
+                  <!-- dark interior (smaller, sits inside rim) -->
+                  <ellipse cx="100" cy="22" rx="68" ry="11" fill="#5C3818"/>
+                </g>
+              </g>`;
+
+    // Layer where the "in" banana goes (between basket rim and body)
+    inner += `<g id="in-basket-layer"></g>`;
+
+    // Front: body + weave + thin highlight on rim front edge
+    inner += `<g transform="translate(310, 138)">
+                <g transform="${bScale}">
+                  <!-- body: starts at rim sides, curves down -->
+                  <path d="M 22 22 Q 30 120 100 130 Q 170 120 178 22 Z"
+                        fill="var(--basket)" stroke="var(--basket-rim)" stroke-width="3.5"
+                        stroke-linejoin="round"/>
+                  <!-- weave horizontal -->
+                  <g stroke="var(--basket-dark)" stroke-width="2.2" fill="none" opacity="0.7">
+                    <path d="M 30 40 Q 100 50 170 40"/>
+                    <path d="M 32 60 Q 100 72 168 60"/>
+                    <path d="M 36 80 Q 100 92 164 80"/>
+                    <path d="M 42 100 Q 100 112 158 100"/>
+                  </g>
+                  <!-- weave vertical hints -->
+                  <g stroke="var(--basket-dark)" stroke-width="1.6" opacity="0.5">
+                    <line x1="60" y1="28" x2="58" y2="118"/>
+                    <line x1="100" y1="32" x2="100" y2="128"/>
+                    <line x1="140" y1="28" x2="142" y2="118"/>
+                  </g>
+                  <!-- subtle highlight along the front lip of the rim -->
+                  <path d="M 24 22 Q 100 36 176 22"
+                        fill="none" stroke="#F0C892" stroke-width="2" opacity="0.7"/>
+                </g>
+              </g>`;
+
+    /* Plate sitting on the table NEXT TO the basket (to the left).
+       Plate top edge at y=240 so it rests on table top (which runs y=240..272).
+       Centered at x=270 with rx=58 → spans x=212..328, well within table (130..670).  */
+    inner += `<g id="plate-group" transform="translate(270, 240)">
+                <!-- shadow under plate -->
+                <ellipse cx="0" cy="6" rx="58" ry="7" fill="rgba(0,0,0,0.18)"/>
+                <!-- plate outer rim -->
+                <ellipse cx="0" cy="0" rx="58" ry="13"
+                         fill="#FFFFFF" stroke="var(--ink)" stroke-width="2.5"/>
+                <!-- plate well (inner ring) -->
+                <ellipse cx="0" cy="-1" rx="44" ry="8"
+                         fill="#F4F8FB" stroke="#B7C8D6" stroke-width="1.5"/>
+                <!-- thin blue trim -->
+                <ellipse cx="0" cy="-1" rx="40" ry="6.5"
+                         fill="none" stroke="#7FB8DE" stroke-width="1"/>
+              </g>`;
+
+    // Front layer (banana in front of basket / on plate / etc.)
+    inner += `<g id="front-layer"></g>`;
+  } else if (a.sceneType === 'twoBoxes') {
+    inner += `<rect x="0" y="380" width="800" height="120" fill="#DCC9A0"/>`;
+    inner += `<line x1="0" y1="380" x2="800" y2="380" stroke="var(--table-shadow)" stroke-width="2" opacity="0.4"/>`;
+    inner += `<g transform="translate(170, 230)"><use href="#box-svg" width="170" height="160"/></g>`;
+    inner += `<g transform="translate(460, 230)"><use href="#box-svg" width="170" height="160"/></g>`;
+    inner += `<g id="behind-layer"></g>`;
+    inner += `<g id="in-basket-layer"></g>`;
+    inner += `<g id="front-layer"></g>`;
+  }
+
+  // Hit zones (invisible) on top
+  const zones = a.correctZones || [a.correctZone];
+  zones.forEach((z, i) => {
+    inner += `<rect class="hit" data-correct="1" data-zone="${i}" x="${z.x}" y="${z.y}" width="${z.w}" height="${z.h}"/>`;
+  });
+
+  sceneEl.innerHTML = inner;
+
+  sceneEl.querySelectorAll('.hit').forEach(h => {
+    h.addEventListener('click', onCorrectTap);
+    h.addEventListener('touchstart', onCorrectTap, { passive: true });
+  });
+  document.getElementById('scene-bg').addEventListener('click', onWrongTap);
+}
+
+trayBanana.addEventListener('click', () => {
+  if (state.paused) return;
+  if (state.results[state.activityIdx].done) return;
+  state.bananaArmed = true;
+  state.awaitingTap = true;
+  trayEl.classList.add('armed');
+  stageEl.classList.add('armed');
+  setSpeechBubble("Now tap where the banana should go!");
+  ensureAudio();
+  chime([[660, 0, 0.08]]);
+});
+
+function onCorrectTap(e) {
+  if (!state.bananaArmed || state.paused) return;
+  if (state.results[state.activityIdx].done) return;
+  e.stopPropagation();
+  e.preventDefault();
+  state.bananaArmed = false;
+  state.awaitingTap = false;
+  trayEl.classList.remove('armed');
+  stageEl.classList.remove('armed');
+  state.attempts[state.activityIdx]++;
+  state.results[state.activityIdx].done = true;
+  state.results[state.activityIdx].firstTry = (state.attempts[state.activityIdx] === 1);
+  placeBanana(ACTIVITIES[state.activityIdx]);
+  sndCorrect();
+  trayBanana.style.visibility = 'hidden';
+
+  const a = ACTIVITIES[state.activityIdx];
+  setSpeechBubble(`Yay! ${a.sayWithMe}`);
+  setTimeout(() => {
+    speech.say([
+      "Hooray! That's right!",
+      "Now say it with me...",
+      a.sayWithMe,
+    ], () => {
+      setTimeout(advanceOrFinish, 1200);
+    });
+    sparkleBurst(a.placedAt);
+  }, 200);
+}
+
+function onWrongTap(e) {
+  if (!state.bananaArmed || state.paused) return;
+  if (state.results[state.activityIdx].done) return;
+  state.attempts[state.activityIdx]++;
+  sndWrong();
+  trayBanana.animate(
+    [{ transform: 'translateX(0)' },
+     { transform: 'translateX(-8px)' },
+     { transform: 'translateX(8px)' },
+     { transform: 'translateX(-5px)' },
+     { transform: 'translateX(0)' }],
+    { duration: 380, easing: 'ease-in-out' }
+  );
+  setSpeechBubble("Hmm, not quite. Try again! Mum or Dad — please give a hint!");
+  speech.say([
+    "Hmm... not quite!",
+    "Let's try again!",
+    "Mum or Dad, can you help?"
+  ]);
+}
+
+function placeBanana(a) {
+  // Choose layer:
+  //   • inside-basket  -> in-basket-layer (sandwiched between basket back and front halves)
+  //   • behindBasket    -> behind-layer  (rendered before basket)
+  //   • everything else -> front-layer    (rendered above basket)
+  let layerId;
+  if (a.bananaLayer === 'inside-basket') layerId = 'in-basket-layer';
+  else if (a.placedAt.behindBasket)       layerId = 'behind-layer';
+  else                                    layerId = 'front-layer';
+
+  const layer = sceneEl.querySelector('#' + layerId);
+  if (!layer) return;
+  const s = a.placedAt.scale || 0.6;
+  const w = 100 * s, h = 100 * s;
+
+  // For "behind" — add an extra rotation so the banana clearly pokes out at an angle
+  const rotate = a.placedAt.behindBasket ? -22 : 0;
+
+  const startX = 400 - w/2, startY = 460 - h/2;
+  const endX = a.placedAt.x - w/2, endY = a.placedAt.y - h/2;
+  const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  g.setAttribute('class', 'placed-banana');
+  g.setAttribute('transform', `translate(${startX}, ${startY}) rotate(${rotate} ${w/2} ${h/2})`);
+  g.innerHTML = `<use href="#banana" width="${w}" height="${h}"/>`;
+  layer.appendChild(g);
+  requestAnimationFrame(() => {
+    g.setAttribute('transform', `translate(${endX}, ${endY}) rotate(${rotate} ${w/2} ${h/2})`);
+  });
+}
+
+function sparkleBurst(at) {
+  const layer = sceneEl.querySelector('#front-layer');
+  if (!layer) return;
+  for (let i = 0; i < 8; i++) {
+    const s = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    const angle = (i / 8) * Math.PI * 2;
+    const r = 60;
+    const cx = at.x + Math.cos(angle) * r;
+    const cy = at.y + Math.sin(angle) * r;
+    s.setAttribute('class', 'sparkle');
+    s.setAttribute('d', `M ${cx} ${cy-8} L ${cx+3} ${cy-3} L ${cx+8} ${cy} L ${cx+3} ${cy+3} L ${cx} ${cy+8} L ${cx-3} ${cy+3} L ${cx-8} ${cy} L ${cx-3} ${cy-3} Z`);
+    s.style.animationDelay = (i * 40) + 'ms';
+    layer.appendChild(s);
+    setTimeout(() => s.remove(), 1200);
+  }
+}
+
+function advanceOrFinish() {
+  trayBanana.style.visibility = 'visible';
+  if (state.activityIdx + 1 < ACTIVITIES.length) {
+    startActivity(state.activityIdx + 1);
+  } else {
+    finishToFeedback();
+  }
+}
+
+/* =====================================================================
+   PAUSE / RESUME
+===================================================================== */
+const pauseOverlay = document.getElementById('pause-overlay');
+const resumeBtn = document.getElementById('resume-btn');
+
+document.querySelectorAll('[data-action="pause"]').forEach(b => b.addEventListener('click', pauseGame));
+resumeBtn.addEventListener('click', resumeGame);
+
+function pauseGame() {
+  if (state.paused) return;
+  state.paused = true;
+  if (speech.enabled) window.speechSynthesis.pause();
+  pauseOverlay.classList.add('show');
+}
+function resumeGame() {
+  if (!state.paused) return;
+  state.paused = false;
+  pauseOverlay.classList.remove('show');
+  if (speech.enabled) window.speechSynthesis.resume();
+}
+
+/* =====================================================================
+   END / PRAISE SCREEN  (no feedback form)
+===================================================================== */
+function finishToFeedback() {
+  showScreen('feedback');
+  setTimeout(() => {
+    speech.say([
+      "Wow! You finished all the activities!",
+      "You tried your very best...",
+      "and Mondi Monkey is so proud of you!",
+      "Keep practising your position words every day.",
+      "Mummy and Daddy, please remind your child to use these words at home.",
+      "Like... put the plate on the table.",
+      "Or... put the cup in the cupboard.",
+      "Thank you for playing with me today!"
+    ]);
+  }, 400);
+}
+
+document.getElementById('fb-restart').addEventListener('click', () => {
+  state.activityIdx = 0;
+  state.attempts = ACTIVITIES.map(() => 0);
+  state.results = ACTIVITIES.map(() => ({ done: false, firstTry: false }));
+  trayBanana.style.visibility = 'visible';
+  showScreen('welcome');
+});
+
+/* =====================================================================
+   TOAST
+===================================================================== */
+let toastTimer = null;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+/* =====================================================================
+   INIT
+===================================================================== */
+window.addEventListener('load', () => {
+  speech.init();
+  pwInput.focus();
+});
+</script>
+
+
+</body></html>
